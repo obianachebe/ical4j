@@ -26,8 +26,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.zone.ZoneOffsetTransition;
 import java.time.zone.ZoneOffsetTransitionRule;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.TimeZone;
-import java.util.*;
+import java.util.TreeSet;
+
+import com.google.common.base.Optional;
 
 public class TimeZoneLoader {
 
@@ -65,10 +76,10 @@ public class TimeZoneLoader {
 
         // Proxy configuration..
         try {
-            if ("true".equals(Configurator.getProperty(UPDATE_PROXY_ENABLED).orElse("false"))) {
-                final Proxy.Type type = Configurator.getEnumProperty(Proxy.Type.class, UPDATE_PROXY_TYPE).orElse(Proxy.Type.DIRECT);
-                final String proxyHost = Configurator.getProperty(UPDATE_PROXY_HOST).orElse("");
-                final int proxyPort = Configurator.getIntProperty(UPDATE_PROXY_PORT).orElse(-1);
+            if ("true".equals(Configurator.getProperty(UPDATE_PROXY_ENABLED).or("false"))) {
+                final Proxy.Type type = Configurator.getEnumProperty(Proxy.Type.class, UPDATE_PROXY_TYPE).or(Proxy.Type.DIRECT);
+                final String proxyHost = Configurator.getProperty(UPDATE_PROXY_HOST).or("");
+                final int proxyPort = Configurator.getIntProperty(UPDATE_PROXY_PORT).or(-1);
                 proxy = new Proxy(type, new InetSocketAddress(proxyHost, proxyPort));
             }
         }
@@ -105,7 +116,7 @@ public class TimeZoneLoader {
                     final Calendar calendar = builder.build(in);
                     final VTimeZone vTimeZone = (VTimeZone) calendar.getComponent(Component.VTIMEZONE);
                     // load any available updates for the timezone.. can be explicility disabled via configuration
-                    if (!"false".equals(Configurator.getProperty(UPDATE_ENABLED).orElse("true"))) {
+                    if (!"false".equals(Configurator.getProperty(UPDATE_ENABLED).or("true"))) {
                         return updateDefinition(vTimeZone);
                     }
                     if (vTimeZone != null) {
@@ -126,13 +137,13 @@ public class TimeZoneLoader {
     private VTimeZone updateDefinition(VTimeZone vTimeZone) throws IOException, ParserException {
         final TzUrl tzUrl = vTimeZone.getTimeZoneUrl();
         if (tzUrl != null) {
-            final int connectTimeout = Configurator.getIntProperty(UPDATE_CONNECT_TIMEOUT).orElse(0);
-            final int readTimeout = Configurator.getIntProperty(UPDATE_READ_TIMEOUT).orElse(0);
+            final int connectTimeout = Configurator.getIntProperty(UPDATE_CONNECT_TIMEOUT).or(0);
+            final int readTimeout = Configurator.getIntProperty(UPDATE_READ_TIMEOUT).or(0);
 
             URLConnection connection;
             URL url = tzUrl.getUri().toURL();
 
-            if ("true".equals(Configurator.getProperty(UPDATE_PROXY_ENABLED).orElse("false")) && proxy != null) {
+            if ("true".equals(Configurator.getProperty(UPDATE_PROXY_ENABLED).or("false")) && proxy != null) {
                 connection = url.openConnection(proxy);
             } else {
                 connection = url.openConnection();
@@ -278,7 +289,7 @@ public class TimeZoneLoader {
 
     private static TimeZoneCache cacheInit() {
         Optional<TimeZoneCache> property = Configurator.getObjectProperty(TZ_CACHE_IMPL);
-        return property.orElseGet(() -> {
+        return property.or(() -> {
             try {
                 return (TimeZoneCache) Class.forName(DEFAULT_TZ_CACHE_IMPL).newInstance();
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoClassDefFoundError e) {

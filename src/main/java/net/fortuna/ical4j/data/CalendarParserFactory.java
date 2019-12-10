@@ -33,7 +33,7 @@ package net.fortuna.ical4j.data;
 
 import net.fortuna.ical4j.util.Configurator;
 
-import java.util.Optional;
+import com.google.common.base.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -62,7 +62,7 @@ public abstract class CalendarParserFactory implements Supplier<CalendarParser> 
     private static Supplier<CalendarParser> instance;
     static {
         Optional<Supplier<CalendarParser>> property = Configurator.getObjectProperty(KEY_FACTORY_CLASS);
-        instance = property.orElse(() -> new CalendarParserImpl());
+        instance = property.or(CalendarParserImpl::new);
     }
 
     /**

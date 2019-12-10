@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
+import com.google.common.base.Optional;
 import java.util.function.Function;
 
 import static net.fortuna.ical4j.model.Recur.Frequency.YEARLY;
@@ -63,7 +63,7 @@ public class ByYearDayRule extends AbstractDateExpansionRule {
             if (yearDayList.contains(cal.get(Calendar.DAY_OF_YEAR))) {
                 return Optional.of(date);
             }
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 

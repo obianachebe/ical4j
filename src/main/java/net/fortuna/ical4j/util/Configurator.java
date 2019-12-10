@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
+import com.google.common.base.Optional;
 import java.util.Properties;
 
 /**
@@ -78,7 +78,7 @@ public final class Configurator {
         if (property == null) {
             property = System.getProperty(key);
         }
-        return Optional.ofNullable(property);
+        return Optional.fromNullable(property);
     }
 
     public static Optional<Integer> getIntProperty(final String key) {
@@ -89,10 +89,10 @@ public final class Configurator {
                 return Optional.of(intValue);
             } catch (NumberFormatException nfe) {
                 LOG.info(String.format("Invalid configuration value: %s", key), nfe);
-                return Optional.empty();
+                return Optional.absent();
             }
         } else {
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 
@@ -103,10 +103,10 @@ public final class Configurator {
                 return Optional.of(Enum.valueOf(clazz, property.get()));
             } catch (IllegalArgumentException iae) {
                 LOG.info(String.format("Invalid configuration value: %s", key), iae);
-                return Optional.empty();
+                return Optional.absent();
             }
         } else {
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 
@@ -117,10 +117,10 @@ public final class Configurator {
                 return Optional.of((T) Class.forName(property.get()).newInstance());
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                 LOG.info(String.format("Invalid configuration value: %s", key), e);
-                return Optional.empty();
+                return Optional.absent();
             }
         } else {
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 }

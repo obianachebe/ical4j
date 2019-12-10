@@ -33,7 +33,7 @@ package net.fortuna.ical4j.model;
 
 import net.fortuna.ical4j.util.Configurator;
 
-import java.util.Optional;
+import com.google.common.base.Optional;
 
 /**
  * $Id$
@@ -57,7 +57,7 @@ public abstract class TimeZoneRegistryFactory {
     private static TimeZoneRegistryFactory instance;
     static {
         Optional<TimeZoneRegistryFactory> property = Configurator.getObjectProperty(KEY_FACTORY_CLASS);
-        instance = property.orElse(new DefaultTimeZoneRegistryFactory());
+        instance = property.or(new DefaultTimeZoneRegistryFactory());
     }
     
     /**

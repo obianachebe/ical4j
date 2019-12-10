@@ -11,7 +11,7 @@ import net.fortuna.ical4j.util.Dates;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
+import com.google.common.base.Optional;
 import java.util.function.Function;
 
 /**
@@ -59,7 +59,7 @@ public class BySecondRule extends AbstractDateExpansionRule {
             if (secondList.contains(cal.get(Calendar.SECOND))) {
                 return Optional.of(date);
             }
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 

@@ -10,7 +10,7 @@ import net.fortuna.ical4j.util.Dates;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Optional;
+import com.google.common.base.Optional;
 
 /**
  * Subclasses provide implementations to expand (or limit) a list of dates based on rule requirements as
@@ -93,7 +93,7 @@ public abstract class AbstractDateExpansionRule implements Transformer<DateList>
 
     public AbstractDateExpansionRule(Frequency frequency, Optional<WeekDay.Day> weekStartDay) {
         this.frequency = frequency;
-        this.calendarWeekStartDay = WeekDay.getCalendarDay(WeekDay.getWeekDay(weekStartDay.orElse(WeekDay.Day.MO)));
+        this.calendarWeekStartDay = WeekDay.getCalendarDay(WeekDay.getWeekDay(weekStartDay.or(WeekDay.Day.MO)));
     }
 
     protected Frequency getFrequency() {

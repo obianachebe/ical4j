@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Optional;
+import com.google.common.base.Optional;
 
 /**
  * Applies BYWEEKNO rules specified in this Recur instance to the specified date list. If no BYWEEKNO rules are

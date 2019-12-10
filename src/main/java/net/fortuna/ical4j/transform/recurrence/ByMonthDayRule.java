@@ -9,8 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.*;
+import com.google.common.base.Optional;
+
+import java.util.EnumSet;
+import java.util.List;
 import java.util.function.Function;
 
 import static net.fortuna.ical4j.model.Recur.Frequency.MONTHLY;
@@ -63,7 +67,7 @@ public class ByMonthDayRule extends AbstractDateExpansionRule {
             if (monthDayList.contains(cal.get(Calendar.DAY_OF_MONTH))) {
                 return Optional.of(date);
             }
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 

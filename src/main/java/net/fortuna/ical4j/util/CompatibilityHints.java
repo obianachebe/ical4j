@@ -84,11 +84,11 @@ public final class CompatibilityHints {
     private static final Map<String, Boolean> HINTS = new ConcurrentHashMap<String, Boolean>();
     // preload known hints from the configurator
     static {
-        setHintEnabled(KEY_RELAXED_UNFOLDING, "true".equals(Configurator.getProperty(KEY_RELAXED_UNFOLDING).orElse("false")));
-        setHintEnabled(KEY_RELAXED_PARSING, "true".equals(Configurator.getProperty(KEY_RELAXED_PARSING).orElse("false")));
-        setHintEnabled(KEY_RELAXED_VALIDATION, "true".equals(Configurator.getProperty(KEY_RELAXED_VALIDATION).orElse("false")));
-        setHintEnabled(KEY_OUTLOOK_COMPATIBILITY, "true".equals(Configurator.getProperty(KEY_OUTLOOK_COMPATIBILITY).orElse("false")));
-        setHintEnabled(KEY_NOTES_COMPATIBILITY, "true".equals(Configurator.getProperty(KEY_NOTES_COMPATIBILITY).orElse("false")));
+        setHintEnabled(KEY_RELAXED_UNFOLDING, "true".equals(Configurator.getProperty(KEY_RELAXED_UNFOLDING).or("false")));
+        setHintEnabled(KEY_RELAXED_PARSING, "true".equals(Configurator.getProperty(KEY_RELAXED_PARSING).or("false")));
+        setHintEnabled(KEY_RELAXED_VALIDATION, "true".equals(Configurator.getProperty(KEY_RELAXED_VALIDATION).or("false")));
+        setHintEnabled(KEY_OUTLOOK_COMPATIBILITY, "true".equals(Configurator.getProperty(KEY_OUTLOOK_COMPATIBILITY).or("false")));
+        setHintEnabled(KEY_NOTES_COMPATIBILITY, "true".equals(Configurator.getProperty(KEY_NOTES_COMPATIBILITY).or("false")));
     }
 
     /**

@@ -43,8 +43,16 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import com.google.common.base.Optional;
 
 /**
  * $Id$ [18-Apr-2004]
@@ -150,7 +158,7 @@ public class Recur implements Serializable {
     private static int maxIncrementCount;
 
     static {
-        maxIncrementCount = Configurator.getIntProperty(KEY_MAX_INCREMENT_COUNT).orElse(1000);
+        maxIncrementCount = Configurator.getIntProperty(KEY_MAX_INCREMENT_COUNT).or(1000);
     }
 
     private transient Logger log = LoggerFactory.getLogger(Recur.class);
@@ -319,43 +327,42 @@ public class Recur implements Serializable {
     private void initTransformers() {
         transformers = new HashMap<>();
         if (secondList != null) {
-            transformers.put(BYSECOND, new BySecondRule(secondList, frequency, Optional.ofNullable(weekStartDay)));
+            transformers.put(BYSECOND, new BySecondRule(secondList, frequency, Optional.fromNullable(weekStartDay)));
         } else {
             secondList = new NumberList(0, 59, false);
         }
         if (minuteList != null) {
-            transformers.put(BYMINUTE, new ByMinuteRule(minuteList, frequency, Optional.ofNullable(weekStartDay)));
+            transformers.put(BYMINUTE, new ByMinuteRule(minuteList, frequency, Optional.fromNullable(weekStartDay)));
         } else {
             minuteList = new NumberList(0, 59, false);
         }
         if (hourList != null) {
-            transformers.put(BYHOUR, new ByHourRule(hourList, frequency, Optional.ofNullable(weekStartDay)));
+            transformers.put(BYHOUR, new ByHourRule(hourList, frequency, Optional.fromNullable(weekStartDay)));
         } else {
             hourList = new NumberList(0, 23, false);
         }
         if (monthDayList != null) {
-            transformers.put(BYMONTHDAY, new ByMonthDayRule(monthDayList, frequency, Optional.ofNullable(weekStartDay)));
+            transformers.put(BYMONTHDAY, new ByMonthDayRule(monthDayList, frequency, Optional.fromNullable(weekStartDay)));
         } else {
             monthDayList = new NumberList(1, 31, true);
         }
         if (yearDayList != null) {
-            transformers.put(BYYEARDAY, new ByYearDayRule(yearDayList, frequency, Optional.ofNullable(weekStartDay)));
+            transformers.put(BYYEARDAY, new ByYearDayRule(yearDayList, frequency, Optional.fromNullable(weekStartDay)));
         } else {
             yearDayList = new NumberList(1, 366, true);
         }
         if (weekNoList != null) {
-            transformers.put(BYWEEKNO, new ByWeekNoRule(weekNoList, frequency, Optional.ofNullable(weekStartDay)));
+            transformers.put(BYWEEKNO, new ByWeekNoRule(weekNoList, frequency, Optional.fromNullable(weekStartDay)));
         } else {
             weekNoList = new NumberList(1, 53, true);
         }
         if (monthList != null) {
-            transformers.put(BYMONTH, new ByMonthRule(monthList, frequency,
-                    Optional.ofNullable(weekStartDay)));
+            transformers.put(BYMONTH, new ByMonthRule(monthList, frequency, Optional.fromNullable(weekStartDay)));
         } else {
             monthList = new NumberList(1, 12, false);
         }
         if (dayList != null) {
-            transformers.put(BYDAY, new ByDayRule(dayList, deriveFilterType(), Optional.ofNullable(weekStartDay)));
+            transformers.put(BYDAY, new ByDayRule(dayList, deriveFilterType(), Optional.fromNullable(weekStartDay)));
         } else {
             dayList = new WeekDayList();
         }
@@ -473,7 +480,7 @@ public class Recur implements Serializable {
      * @return Returns the count or -1 if the rule does not have a count.
      */
     public final int getCount() {
-        return Optional.ofNullable(count).orElse(-1);
+        return Optional.fromNullable(count).or(-1);
     }
 
     /**
@@ -494,7 +501,7 @@ public class Recur implements Serializable {
      * @return Returns the interval or -1 if the rule does not have an interval defined.
      */
     public final int getInterval() {
-        return Optional.ofNullable(interval).orElse(-1);
+        return Optional.fromNullable(interval).or(-1);
     }
 
     /**
@@ -949,7 +956,7 @@ public class Recur implements Serializable {
 
             NumberList implicitMonthDayList = new NumberList();
             implicitMonthDayList.add(rootSeed.get(Calendar.DAY_OF_MONTH));
-            ByMonthDayRule implicitRule = new ByMonthDayRule(implicitMonthDayList, frequency, Optional.ofNullable(weekStartDay));
+            ByMonthDayRule implicitRule = new ByMonthDayRule(implicitMonthDayList, frequency, Optional.fromNullable(weekStartDay));
             dates = implicitRule.transform(dates);
         }
 
@@ -963,7 +970,7 @@ public class Recur implements Serializable {
                 && !weekNoList.isEmpty() && monthDayList.isEmpty())) {
 
             ByDayRule implicitRule = new ByDayRule(new WeekDayList(WeekDay.getWeekDay(rootSeed)),
-                    deriveFilterType(),  Optional.ofNullable(weekStartDay));
+                    deriveFilterType(),  Optional.fromNullable(weekStartDay));
             dates = implicitRule.transform(dates);
         }
 

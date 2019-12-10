@@ -11,7 +11,7 @@ import net.fortuna.ical4j.util.Dates;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
+import com.google.common.base.Optional;
 import java.util.function.Function;
 
 /**
@@ -23,7 +23,7 @@ public class ByMonthRule extends AbstractDateExpansionRule {
     private final NumberList monthList;
 
     public ByMonthRule(NumberList monthList, Frequency frequency) {
-        this(monthList, frequency, Optional.empty());
+        this(monthList, frequency, Optional.absent());
     }
 
     public ByMonthRule(NumberList monthList, Frequency frequency, Optional<WeekDay.Day> weekStartDay) {
@@ -59,7 +59,7 @@ public class ByMonthRule extends AbstractDateExpansionRule {
             if (monthList.contains(cal.get(Calendar.MONTH) + 1)) {
                 return Optional.of(date);
             }
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 

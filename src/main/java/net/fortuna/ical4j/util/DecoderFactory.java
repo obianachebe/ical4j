@@ -36,7 +36,7 @@ import org.apache.commons.codec.BinaryDecoder;
 import org.apache.commons.codec.StringDecoder;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Optional;
+import com.google.common.base.Optional;
 
 /**
  * Abstract base class for decoder factory implementations.
@@ -58,7 +58,7 @@ public abstract class DecoderFactory {
     private static DecoderFactory instance;
     static {
         Optional<DecoderFactory> property = Configurator.getObjectProperty(KEY_FACTORY_CLASS);
-        instance = property.orElse(new DefaultDecoderFactory());
+        instance = property.or(new DefaultDecoderFactory());
     }
     
     /**

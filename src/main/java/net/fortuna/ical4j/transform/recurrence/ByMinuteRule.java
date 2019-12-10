@@ -8,7 +8,12 @@ import net.fortuna.ical4j.model.WeekDay;
 import net.fortuna.ical4j.model.parameter.Value;
 import net.fortuna.ical4j.util.Dates;
 
-import java.util.*;
+import com.google.common.base.Optional;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.function.Function;
 
 import static net.fortuna.ical4j.model.Recur.Frequency.*;
@@ -58,7 +63,7 @@ public class ByMinuteRule extends AbstractDateExpansionRule {
             if (minuteList.contains(cal.get(Calendar.MINUTE))) {
                 return Optional.of(date);
             }
-            return Optional.empty();
+            return Optional.absent();
         }
     }
 
