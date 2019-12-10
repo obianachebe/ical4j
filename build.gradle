@@ -1,14 +1,12 @@
 import aQute.bnd.gradle.Bundle
 
 buildscript {
-    ext.kotlin_version = '1.3.61'
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath 'org.hidetake:gradle-ssh-plugin:2.10.1'
         classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.2.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -20,7 +18,6 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'kotlin'
 apply plugin: 'java-library'
 apply plugin: 'groovy'
 apply plugin: 'biz.aQute.bnd.builder'
@@ -72,7 +69,6 @@ dependencies {
         'org.ccil.cowan.tagsoup:tagsoup:1.2.1',
         "org.slf4j:slf4j-log4j12:$slf4jVersion",
         'org.ehcache:ehcache:3.4.0', 'com.sun.mail:javax.mail:1.5.4'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -260,14 +256,4 @@ bintray {
     }
 //    configurations = ['archives']
     publications = ['mavenArtifacts']
-}
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
